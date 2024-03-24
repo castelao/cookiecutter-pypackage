@@ -33,12 +33,26 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
   "build > 0.6",
+  "twine >= 3.4",
+]
+doc = [
+  "sphinx >= 4.0",
+  "sphinx-autodoc-typehints >= 1.12",
+  {%- if cookiecutter.command_line_interface|lower == 'click' %}
+  "sphinx-click>=5.1",
+  {%- endif %}
+  "sphinx-rtd-theme >= 1.0",
+  "sphinxcontrib-napoleon >= 0.8",
+  "sphinxcontrib-spelling >= 7.0",
+  "sphinxcontrib-trio >= 1.1",
+  "sphinxcontrib-websupport >= 1.2",
 ]
 test = [
   {%- if cookiecutter.use_pytest == 'y' %}
   "pytest > 7.0",
   "pytest-cov[all] >= 3.0",
   {%- endif %}
+  "tox >= 3.0",
 ]
 
 [project.urls]
