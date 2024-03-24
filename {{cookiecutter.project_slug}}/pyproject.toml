@@ -1,9 +1,7 @@
 [build-system]
 requires = [
-  "setuptools >= 48",
-  "setuptools_scm[toml] >= 6.2",
-  "setuptools_scm_git_archive",
-  "wheel >= 0.29.0",
+  "setuptools >= 61",
+  "setuptools_scm[toml] >= 8",
 ]
 build-backend = 'setuptools.build_meta'
 
@@ -12,7 +10,7 @@ name="{{ cookiecutter.project_slug }}"
 dynamic = ['version']
 description="{{ cookiecutter.project_short_description }}"
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 keywords = ["{{ cookiecutter.project_slug }}"]
 authors = [
   {email = "{{ cookiecutter.email }}"},
@@ -22,9 +20,9 @@ classifiers=[
   "Development Status :: 2 - Pre-Alpha",
   "Natural Language :: English",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
 ]
 dependencies = [
   {%- if cookiecutter.command_line_interface|lower == 'click' %}
@@ -33,11 +31,28 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+dev = [
+  "build > 0.6",
+  "twine >= 3.4",
+]
+doc = [
+  "sphinx >= 4.0",
+  "sphinx-autodoc-typehints >= 1.12",
+  {%- if cookiecutter.command_line_interface|lower == 'click' %}
+  "sphinx-click>=5.1",
+  {%- endif %}
+  "sphinx-rtd-theme >= 1.0",
+  "sphinxcontrib-napoleon >= 0.8",
+  "sphinxcontrib-spelling >= 7.0",
+  "sphinxcontrib-trio >= 1.1",
+  "sphinxcontrib-websupport >= 1.2",
+]
 test = [
   {%- if cookiecutter.use_pytest == 'y' %}
-  "pytest < 5.0.0",
-  "pytest-cov[all]",
+  "pytest > 7.0",
+  "pytest-cov[all] >= 3.0",
   {%- endif %}
+  "tox >= 3.0",
 ]
 
 [project.urls]
@@ -49,15 +64,21 @@ repository = "https://github.com/{{ cookiecutter.github_username }}/{{ cookiecut
 {%- endif %}
 
 [tool.black]
-line-length = 79
+line-length = 88
 
 [tool.setuptools.packages.find]
 include = ['{{ cookiecutter.project_slug }}', '{{ cookiecutter.project_slug }}.*']
 namespaces = false
 
 [tool.setuptools_scm]
-write_to = "{{ cookiecutter.project_slug }}/version.py"
+version_file = "{{ cookiecutter.project_slug }}/_version.py"
 git_describe_command = "git describe --dirty --tags --long --match 'v*' --first-parent"
 
 [tool.pytest]
 collect_ignore = ['setup.py']
+
+[tool.ruff]
+line-length = 88
+
+[tool.ruff.pydocstyle]
+convention = "numpy"
